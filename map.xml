@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<map proto="1.3.3">
+	<name>Sushi</name>
+	<version>0.1.0</version>
+	<objective>目標の破壊/Destroy the enemy's Monument.</objective>
+
+	<authors>
+		<author>EEE</author>
+	</authors>
+
+	<teams>
+		<team max="16" color="blue">Blue Team</team>
+		<team max="16" color="red">Red Team</team>
+	</teams>
+
+	<!-- チームごとの初期装備 -->
+	<kits>
+		<kit name="default">
+			<!-- 装備 -->
+			<chestplate damage="-3000" enchantment="protection explosions:3" bind="true">Leather Chestplate</chestplate>
+			<leggings damage="-3000" enchantment="protection explosions:3" bind="true">Leather Leggings</leggings>
+			<!-- ホットバー -->
+			<item slot="0" damage="-3000" enchantment="DAMAGE_ALL:1">Diamond Pickaxe</item>
+			<item slot="1" amount="16">Ladder</item>
+			<item slot="2" amount="32">Golden Carrot</item>
+			<item slot="3" amount="64">Nether Fence</item>
+			<item slot="4" amount="64">Stone Button</item>
+			<item slot="5" amount="64">TNT</item>
+			<item slot="6" amount="64">Vine</item>
+			<item slot="7" amount="64">Redstone</item>
+			<!-- インベントリ -->
+			<item slot="9" amount="64">TNT</item>
+			<item slot="10" amount="64">TNT</item>
+			<item slot="11" amount="64">TNT</item>
+			<item slot="13" amount="16">Stone Plate</item>
+			<item slot="14" amount="64">Redstone Torch On</item>
+			<item slot="15" amount="64" damage="7">Step</item>
+			<item slot="18" amount="64">TNT</item>
+			<item slot="19" amount="64">TNT</item>
+			<item slot="20" amount="16">Diode</item>
+			<item slot="21" amount="8">Piston Base</item>
+			<item slot="22" amount="16">Lever</item>
+			<item slot="23" amount="64">Redstone</item>
+			<item slot="27">Shears</item>
+			<item slot="29" amount="8">Redstone Comparator</item>
+			<item slot="30" name="Shari" amount="64">Snow Ball</item>
+			<item slot="31" amount="64">Trap Door</item>
+			<item slot="32" amount="64">Redstone Block</item>
+
+		</kit>
+		<kit name="blue" parents="default">
+			<helmet color="0000ff" damage="-3000" enchantment="protection explosions" bind="true">Leather Helmet</helmet><!-- damage値-3000で耐久度上がる -->
+			<boots color="0000ff" damage="-3000" enchantment="protection fall:3" bind="true">Leather Boots</boots>
+			<item slot="8" amount="64" damage="11">Stained Clay</item>
+			<item slot="16" amount="64" damage="11">Stained Glass</item>
+			<item slot="17" amount="64" damage="11">Stained Clay</item>
+			<item slot="25" amount="64" damage="11">Stained Clay</item>
+			<item slot="26" amount="64" damage="11">Stained Clay</item>
+			<item slot="34" amount="64" damage="11">Stained Clay</item>
+			<item slot="35" amount="64" damage="11">Stained Clay</item>
+		</kit>
+		<kit name="red" parents="default">
+			<helmet color="ff0000" damage="-3000" enchantment="protection explosions" bind="true">Leather Helmet</helmet>
+			<boots color="ff0000" damage="-3000" enchantment="protection fall:3" bind="true">Leather Boots</boots>
+			<item slot="8" amount="64" damage="14">Stained Clay</item>
+			<item slot="16" amount="64" damage="14">Stained Glass</item>
+			<item slot="17" amount="64" damage="14">Stained Clay</item>
+			<item slot="25" amount="64" damage="14">Stained Clay</item>
+			<item slot="26" amount="64" damage="14">Stained Clay</item>
+			<item slot="34" amount="64" damage="14">Stained Clay</item>
+			<item slot="35" amount="64" damage="14">Stained Clay</item>
+		</kit>
+
+		<kit name="spawn-kit">
+			<potion duration="6" amplifier="2">REGENERATION</potion>
+     		<potion duration="6" amplifier="2">DAMAGE_RESISTANCE</potion>
+		</kit>
+	</kits>
+
+	<!-- スポーン位置 -->
+	<spawns>
+		<spawn team="blue" yaw="0" kit="blue">
+			<cuboid min="-23,66,13" max="-1,66,18" />
+		</spawn>
+		<spawn team="red" yaw="180" kit="red">
+			<cuboid min="-23,66,-55" max="-1,66,-60" />
+		</spawn>
+		<default yaw="-90">
+			<cuboid min="-102,63,-21" max="-98,63,-17" />
+		</default>
+	</spawns>
+
+	<!-- フィルター定義 -->
+	<filters>
+		<filter name="spawn-blue">
+			<team>blue</team>
+		</filter>
+		<filter name="spawn-red">
+			<team>red</team>
+		</filter>
+
+		<filter name="not-editable" parents="deny-blocks"></filter>
+		<filter name="outside">
+			<not>
+				<void/>
+			</not>
+		</filter>
+
+		<!-- TNTによる自拠点側への破壊からの保護 -->
+		<filter name="tnt-guard-blue">
+			<not>
+				<all>
+					<team>blue</team>
+					<cause>explosion</cause>
+					<not>
+						<block>tnt</block>
+					</not>
+				</all>
+			</not>
+		</filter>
+
+		<filter name="tnt-guard-red">
+			<not>
+				<all>
+					<team>red</team>
+					<cause>explosion</cause>
+					<not>
+						<block>tnt</block>
+					</not>
+				</all>
+			</not>
+		</filter>
+	</filters>
+
+	<!-- 領域定義 -->
+	<regions>
+		<!-- マップ全体 -->
+		<rectangle name="map" min="-121,-86" max="55,48"/>
+		<!-- チーム拠点定義と保護 -->
+		<cuboid name="blue-base" min="-79,63,3" max="55,94,27"/>
+		<cuboid name="red-base" min="-79,63,-66" max="55,94,-41"/>
+		<union name="Base">
+			<region name="blue-base"/>
+			<region name="red-base"/>
+		</union>
+
+		<apply block="not-editable" block-place="deny-all" message="`4You may not modify bases.">
+			<region name="Base"/>
+		</apply>
+
+		<!-- リスポ位置から降りる時にkitを付与 -->
+		<apply filter="spawn-blue" kit="spawn-kit">
+			<cuboid min="-82,63,0" max="58,63,51"/>
+		</apply>
+		<apply filter="spawn-red" kit="spawn-kit">
+			<cuboid min="-82,63,-89" max="58,63,-38" />
+		</apply>
+		
+		<!--  自軍破壊保護  -->
+		<apply block="tnt-guard-blue">
+			<cuboid min="-79,0,3" max="55,43,48" />
+		</apply>
+		<apply block="tnt-guard-red">
+			<cuboid min="-79,0,-86" max="55,43,-41" />
+		</apply>
+
+		<!-- 観戦者スポーンの保護 -->
+		<apply block="deny-blocks" message="`4You may not edit the base.">
+			<cuboid min="-121,59,-11" max="-93,69,-25" />
+		</apply>
+
+		<!-- icarusの禁止 -->
+		<apply enter="deny-all" message="`4You may not go to enemies base.">
+			<rectangle min="-122,-20" max="80,-18"/>
+		</apply>
+
+		<!-- 領域外 -->
+		<apply block="outside" message="`4You may not modify void area.">
+			<rectangle min="-oo,-oo" max="oo,oo"/>
+		</apply>
+	</regions>
+
+	<itemremove>
+		<item>Diamond Pickaxe</item>
+		<item>Snow Ball</item>
+		<item>TNT</item>
+		<item>Redstone</item>
+		<item>Redstone Torch On</item>
+		<item>Redstone Comparator</item>
+		<item>Redstone Block</item>
+		<item>Diode</item>
+		<item>Stone Button</item>
+		<item>Lever</item>
+		<item>Stone Plate</item>
+		<item>Trap Door</item>
+		<item>Ladder</item>
+		<item>Nether Fence</item>
+		<item>Shears</item>
+		<item>Vine</item>
+		<item>Piston Base</item>
+		<item>Step</item>
+		<item>Iron Helmet</item>
+		<item>Iron Boots</item>
+		<item>Diamond Helmet</item>
+		<item>Diamond Boots</item>
+		<item>Golden Carrot</item>
+		<item>Stained Clay</item>
+		<item>Stained Glass</item>
+		<item>Carpet</item>
+	</itemremove>
+
+	<!--  モニュメント定義  -->
+	<destroyables show-progress="false" materials="wool" completion="61%">
+		<destroyable owner="blue" name="Tamago">
+			<cuboid min="12,12,9" max="45,34,42"/>
+		</destroyable>
+		<destroyable owner="blue" name="Ebi">
+			<cuboid min="-33,12,9" max="11,34,53"/>
+		</destroyable>
+		<destroyable owner="blue" name="Maki">
+			<cuboid min="-71,12,11" max="-41,28,41"/>
+		</destroyable>
+
+		<destroyable owner="red" name="Tamago">
+			<cuboid min="-69,12,-80," max="-36,34,-47"/>
+		</destroyable>
+		<destroyable owner="red" name="Ebi">5e
+			<cuboid min="-35,12,-91" max="9,34,-47"/>
+		</destroyable>
+		<destroyable owner="red" name="Maki">
+			<cuboid min="17,12,-79" max="47,28,-49"/>
+		</destroyable>
+	</destroyables>
+
+	<!-- キル報酬 -->
+	<!-- クラス共通 -->
+	<killreward>
+		<item amount="1">Golden Apple</item>
+		<item slot="9" amount="64">TNT</item>
+	</killreward>
+
+	<!-- ブロックの復元 -->
+	<renewables>
+		<renewable rate="80" particles="false" sound="false" avoid-entities="true">
+			<region>
+				<cuboid min="-79,0,3" max="55,12,48" />
+			</region>
+			<renew>Stained Clay</renew>
+			<replace>Air</replace>
+		</renewable>
+
+		<renewable rate="80" particles="false" sound="false" avoid-entities="true">
+			<region>
+				<cuboid min="-79,0,-86" max="55,12,-41" />
+			</region>
+			<renew>Stained_clay</renew>
+			<replace>Air</replace>
+		</renewable>
+	</renewables>
+
+	<!-- ブロックドロップ拒否 -->
+	<blockdrops>
+		<rule>
+			<region>
+				<region name="map"/>
+			</region>
+			<filter>
+				<block>Stained_clay</block>
+				<block>Glowstone</block>
+				<block>Quartz Block</block>
+				<block>Wool</block>
+				<block>Carpet</block>
+			</filter>
+		</rule>
+	</blockdrops>
+
+	<!-- 限界高度 -->
+	<maxbuildheight>42</maxbuildheight>
+
+	<!-- チュートリアル -->
+	<include src="tutorial.xml"/>
+	<tutorial>
+		<stage title="Control Point (CP)">
+			<message>
+				<line>This map is a `a`lSushi`r(DTM).</line>
+				<line>The objective is to destroy the monuments.</line>
+				<line>`a`l"Caution"  You can not go to other team's side in this map!!`r</line>
+			</message>
+			<message lang="ja_JP">
+				<line>このマップは`a`lSushi`r(DTM)です。</line>
+				<line>他チームのモニュメントを破壊する事が目標になります。</line>
+				<line>`a`l"注意" このマップでは相手のチーム側に移動することはできません!!`r</line>
+			</message>
+			<teleport>
+				<point yaw="-90" piitch="15">-100,64,-19</point>
+			</teleport>
+		</stage>
+
+		<!-- スポーン場所の説明 -->
+		<stage title="Blue-Base">
+		    <message>
+    			 <line>This is blue team spawn point.</line>
+			</message>
+		    <message lang="ja_JP">
+			     <line>青チームのスポーン場所はここです。</line>
+		    </message>
+   			<teleport>
+   				<point yaw="0" pitch="90">-12,66,16</point>
+			</teleport>
+		</stage>
+		<stage title="Red-Base">
+		    <message>
+    			 <line>This is red team spawn point.</line>
+			</message>
+		    <message lang="ja_JP">
+			     <line>赤チームのスポーン場所はここです。</line>
+		    </message>
+   			<teleport>
+   				<point yaw="180" pitch="90">-12,66,-57</point>
+			</teleport>
+		</stage>
+
+		<!-- オブジェクトの説明 -->	
+		<stage title="Tamago">
+		    <message>
+    			 <line>This is Tamago.</line>
+			</message>
+		    <message lang="ja_JP">
+			     <line>これがTamagoです。</line>
+		    </message>
+   			<teleport>
+   				<point yaw="180" pitch="15">-53,36,-30</point>
+			</teleport>
+		</stage>
+		<stage title="Ebi">
+		    <message>
+    			 <line>This is Ebi.</line>
+			</message>
+		    <message lang="ja_JP">
+			     <line>これがEbiです。</line>
+		    </message>
+   			<teleport>
+   				<point yaw="180" pitch="15">-8,36,-30</point>
+			</teleport>
+		</stage>
+		<stage title="Maki">
+		    <message>
+    			 <line>This is Maki.</line>
+			</message>
+		    <message lang="ja_JP">
+			     <line>これがMakiです。</line>
+		    </message>
+   			<teleport>
+   				<point yaw="180" pitch="15">33,36,-30</point>
+			</teleport>
+		</stage>
+
+		<!-- TNTキャノンの説明 -->	
+		<stage title="Yellow-Base">
+		    <message>
+    			 <line>This is an example of TNT cannon.</line>
+			</message>
+		    <message lang="ja_JP">
+			     <line>TNTキャノンの例です。</line>
+		    </message>
+   			<teleport>
+   				<point yaw="90" pitch="15">-109,67,-19</point>
+			</teleport>
+		</stage>
+	</tutorial>
+</map>
