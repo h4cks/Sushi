@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<map proto="1.3.3">
+<map proto="1.3.5">
 	<name>Sushi</name>
-	<version>0.1.3</version>
+	<version>0.1.4</version>
 	<objective>目標の破壊/Destroy the enemy's Monument.</objective>
 
 	<authors>
@@ -15,7 +15,7 @@
 
 	<!-- チームごとの初期装備 -->
 	<kits>
-		<kit name="default">
+		<kit id="default">
 			<!-- 装備 -->
 			<chestplate damage="-3000" enchantment="protection explosions:3" bind="true">Leather Chestplate</chestplate>
 			<leggings damage="-3000" enchantment="protection explosions:3" bind="true">Leather Leggings</leggings>
@@ -48,7 +48,7 @@
 			<item slot="32" amount="64">Redstone Block</item>
 
 		</kit>
-		<kit name="blue" parents="default">
+		<kit id="blue" parents="default">
 			<helmet color="0000ff" damage="-3000" enchantment="protection explosions" bind="true">Leather Helmet</helmet><!-- damage値-3000で耐久度上がる -->
 			<boots color="0000ff" damage="-3000" enchantment="protection fall:3" bind="true">Leather Boots</boots>
 			<item slot="8" amount="64" damage="11">Stained Clay</item>
@@ -59,7 +59,7 @@
 			<item slot="34" amount="64" damage="11">Stained Clay</item>
 			<item slot="35" amount="64" damage="11">Stained Clay</item>
 		</kit>
-		<kit name="red" parents="default">
+		<kit id="red" parents="default">
 			<helmet color="ff0000" damage="-3000" enchantment="protection explosions" bind="true">Leather Helmet</helmet>
 			<boots color="ff0000" damage="-3000" enchantment="protection fall:3" bind="true">Leather Boots</boots>
 			<item slot="8" amount="64" damage="14">Stained Clay</item>
@@ -71,7 +71,7 @@
 			<item slot="35" amount="64" damage="14">Stained Clay</item>
 		</kit>
 
-		<kit name="spawn-kit">
+		<kit id="spawn-kit">
 			<potion duration="6" amplifier="2">REGENERATION</potion>
      		<potion duration="6" amplifier="2">DAMAGE_RESISTANCE</potion>
 		</kit>
@@ -92,22 +92,22 @@
 
 	<!-- フィルター定義 -->
 	<filters>
-		<filter name="spawn-blue">
+		<filter id="spawn-blue">
 			<team>blue</team>
 		</filter>
-		<filter name="spawn-red">
+		<filter id="spawn-red">
 			<team>red</team>
 		</filter>
 
-		<filter name="not-editable" parents="deny-blocks"></filter>
-		<filter name="outside">
+		<filter id="not-editable" parents="deny-blocks"></filter>
+		<filter id="outside">
 			<not>
 				<void/>
 			</not>
 		</filter>
 
 		<!-- TNTによる自拠点側への破壊からの保護 -->
-		<filter name="tnt-guard-blue">
+		<filter id="tnt-guard-blue">
 			<not>
 				<all>
 					<team>blue</team>
@@ -119,7 +119,7 @@
 			</not>
 		</filter>
 
-		<filter name="tnt-guard-red">
+		<filter id="tnt-guard-red">
 			<not>
 				<all>
 					<team>red</team>
@@ -135,17 +135,17 @@
 	<!-- 領域定義 -->
 	<regions>
 		<!-- マップ全体 -->
-		<rectangle name="map" min="-121,-86" max="55,48"/>
+		<rectangle id="map" min="-121,-86" max="55,48"/>
 		<!-- チーム拠点定義と保護 -->
-		<cuboid name="blue-base" min="-79,63,3" max="55,94,27"/>
-		<cuboid name="red-base" min="-79,63,-66" max="55,94,-41"/>
-		<union name="Base">
-			<region name="blue-base"/>
-			<region name="red-base"/>
+		<cuboid id="blue-base" min="-79,63,3" max="55,94,27"/>
+		<cuboid id="red-base" min="-79,63,-66" max="55,94,-41"/>
+		<union id="Base">
+			<region id="blue-base"/>
+			<region id="red-base"/>
 		</union>
 
 		<apply block="not-editable" block-place="deny-all" message="`4You may not modify bases./拠点は編集できません。">
-			<region name="Base"/>
+			<region id="Base"/>
 		</apply>
 
 		<!-- リスポ位置から降りる時にkitを付与 -->
@@ -210,7 +210,7 @@
 	</itemremove>
 
 	<!--  モニュメント定義  -->
-	<destroyables show-progress="false" materials="wool" completion="61%">
+	<destroyables show-progress="false" materials="wool" completion="56%">
 		<destroyable owner="blue" name="Tamago">
 			<cuboid min="12,12,9" max="45,34,42"/>
 		</destroyable>
@@ -241,18 +241,38 @@
 
 	<!-- ブロックの復元 -->
 	<renewables>
+
+		<!-- 青チーム側 -->
 		<renewable rate="80" particles="false" sound="false" avoid-entities="true">
-			<region>
-				<cuboid min="-79,0,3" max="55,12,48" />
+			<region id="blue-clay">
+				<cuboid min="-79,6,3" max="54,12,47" />
+				<cuboid min="-60,0,4" max="-53,6,45" />
+				<cuboid min="28,0,4" max="35,6,45" />
 			</region>
+
+
+
+
+
+
+
 			<renew>Stained Clay</renew>
 			<replace>Air</replace>
 		</renewable>
 
+		<!-- 赤チーム側 -->
 		<renewable rate="80" particles="false" sound="false" avoid-entities="true">
-			<region>
-				<cuboid min="-79,0,-86" max="55,12,-41" />
+			<region id="red-clay">
+				<cuboid min="-79,6,-86" max="54,12,-42" />
+				<cuboid min="-60,0,-84" max="-53,6,-44" />
+				<cuboid min="28,0,-84" max="35,6,-44" />
 			</region>
+
+
+
+
+
+
 			<renew>Stained_clay</renew>
 			<replace>Air</replace>
 		</renewable>
@@ -262,7 +282,7 @@
 	<blockdrops>
 		<rule>
 			<region>
-				<region name="map"/>
+				<region id="map"/>
 			</region>
 			<filter>
 				<block>Stained_clay</block>
