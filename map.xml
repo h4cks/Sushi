@@ -29,29 +29,29 @@
 			<item slot="6" amount="64">Vine</item>
 			<item slot="7" amount="64">Redstone</item>
 			<!-- インベントリ -->
-			<item slot="8" amount="64" damage="11">Quartz Block</item>
+			<item slot="8" amount="64" >Quartz Block</item>
 			<item slot="9" amount="64">TNT</item>
 			<item slot="10" amount="64">TNT</item>
 			<item slot="11" amount="64">TNT</item>
 			<item slot="13" amount="16">Stone Plate</item>
 			<item slot="14" amount="64">Redstone Torch On</item>
 			<item slot="15" amount="64" damage="7">Step</item>
-			<item slot="17" amount="64" damage="11">Quartz Block</item>
+			<item slot="17" amount="64" >Quartz Block</item>
 			<item slot="18" amount="64">TNT</item>
 			<item slot="19" amount="64">TNT</item>
 			<item slot="20" amount="16">Diode</item>
 			<item slot="21" amount="8">Piston Base</item>
 			<item slot="22" amount="16">Lever</item>
 			<item slot="23" amount="64">Redstone</item>
-			<item slot="25" amount="64" damage="11">Quartz Block</item>
-			<item slot="26" amount="64" damage="11">Quartz Block</item>
+			<item slot="25" amount="64" >Quartz Block</item>
+			<item slot="26" amount="64" >Quartz Block</item>
 			<item slot="27">Shears</item>
 			<item slot="29" amount="8">Redstone Comparator</item>
 			<item slot="30" name="Shari" amount="64">Snow Ball</item>
 			<item slot="31" amount="64">Trap Door</item>
 			<item slot="32" amount="64">Redstone Block</item>
-			<item slot="34" amount="64" damage="11">Quartz Block</item>
-			<item slot="35" amount="64" damage="11">Quartz Block</item>
+			<item slot="34" amount="64" >Quartz Block</item>
+			<item slot="35" amount="64" >Quartz Block</item>
 		</kit>
 		<kit id="blue" parents="default">
 			<helmet color="0000ff" damage="-3000" enchantment="protection explosions" bind="true">Leather Helmet</helmet><!-- damage値-3000で耐久度上がる -->
