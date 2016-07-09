@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <map proto="1.3.5">
 	<name>Sushi</name>
-	<version>0.1.7</version>
+	<version>0.1.8</version>
 	<objective>目標の破壊/Destroy the enemy's Monument.</objective>
 
 	<authors>
@@ -40,7 +40,6 @@
 			<item slot="18" amount="64">TNT</item>
 			<item slot="19" amount="64">TNT</item>
 			<item slot="20" amount="16">Diode</item>
-			<item slot="21" amount="8">Piston Base</item>
 			<item slot="22" amount="16">Lever</item>
 			<item slot="23" amount="64">Redstone</item>
 			<item slot="25" amount="64" >Quartz Block</item>
@@ -190,7 +189,6 @@
 		<item>Nether Fence</item>
 		<item>Shears</item>
 		<item>Vine</item>
-		<item>Piston Base</item>
 		<item>Step</item>
 		<item>Iron Helmet</item>
 		<item>Iron Boots</item>
