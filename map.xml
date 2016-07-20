@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<map proto="1.3.5">
+<map proto="1.3.3">
 	<name>Sushi</name>
-	<version>0.1.8</version>
+	<version>0.1.9</version>
 	<objective>目標の破壊/Destroy the enemy's Monument.</objective>
 
 	<authors>
@@ -15,7 +15,7 @@
 
 	<!-- チームごとの初期装備 -->
 	<kits>
-		<kit id="default">
+		<kit name="default">
 			<!-- 装備 -->
 			<chestplate damage="-3000" enchantment="protection explosions:3" bind="true">Leather Chestplate</chestplate>
 			<leggings damage="-3000" enchantment="protection explosions:3" bind="true">Leather Leggings</leggings>
@@ -52,18 +52,18 @@
 			<item slot="34" amount="64" >Quartz Block</item>
 			<item slot="35" amount="64" >Quartz Block</item>
 		</kit>
-		<kit id="blue" parents="default">
+		<kit name="blue" parents="default">
 			<helmet color="0000ff" damage="-3000" enchantment="protection explosions" bind="true">Leather Helmet</helmet><!-- damage値-3000で耐久度上がる -->
 			<boots color="0000ff" damage="-3000" enchantment="protection fall:3" bind="true">Leather Boots</boots>
 			<item slot="16" amount="64" damage="11">Stained Glass</item>
 		</kit>
-		<kit id="red" parents="default">
+		<kit name="red" parents="default">
 			<helmet color="ff0000" damage="-3000" enchantment="protection explosions" bind="true">Leather Helmet</helmet>
 			<boots color="ff0000" damage="-3000" enchantment="protection fall:3" bind="true">Leather Boots</boots>
 			<item slot="16" amount="64" damage="14">Stained Glass</item>
 		</kit>
 
-		<kit id="spawn-kit">
+		<kit name="spawn-kit">
 			<potion duration="6" amplifier="2">REGENERATION</potion>
      		<potion duration="6" amplifier="2">DAMAGE_RESISTANCE</potion>
 		</kit>
@@ -84,60 +84,82 @@
 
 	<!-- フィルター定義 -->
 	<filters>
-		<filter id="spawn-blue">
+		<filter name="spawn-blue">
 			<team>blue</team>
 		</filter>
-		<filter id="spawn-red">
+		<filter name="spawn-red">
 			<team>red</team>
 		</filter>
 
-		<filter id="not-editable" parents="deny-blocks"></filter>
-		<filter id="outside">
+		<filter name="not-editable" parents="deny-blocks"></filter>
+		<filter name="outside">
 			<not>
 				<void/>
 			</not>
 		</filter>
 
 		<!-- TNTによる自拠点側への破壊からの保護 -->
-		<filter id="tnt-guard-blue">
-			<not>
-				<all>
-					<team>blue</team>
-					<cause>explosion</cause>
-					<not>
-						<block>tnt</block>
-					</not>
-				</all>
-			</not>
+		<filter name="tnt-guard-blue">
+			<all>
+				<not>
+					<all>
+						<team>blue</team>
+						<cause>explosion</cause>
+						<not>
+							<block>tnt</block>
+						</not>
+					</all>
+				</not>
+				<not>
+					<all>
+						<team>blue</team>
+						<cause>player</cause>
+						<all>
+							<block>wool</block>
+						</all>
+					</all>
+				</not>
+			</all>
 		</filter>
 
-		<filter id="tnt-guard-red">
-			<not>
-				<all>
-					<team>red</team>
-					<cause>explosion</cause>
-					<not>
-						<block>tnt</block>
-					</not>
-				</all>
-			</not>
+		<filter name="tnt-guard-red">
+			<all>
+				<not>
+					<all>
+						<team>red</team>
+						<cause>explosion</cause>
+						<not>
+							<block>tnt</block>
+						</not>
+					</all>
+				</not>
+				<not>
+					<all>
+						<team>red</team>
+						<cause>player</cause>
+						<all>
+							<block>wool</block>
+						</all>
+					</all>
+				</not>
+			</all>
 		</filter>
 	</filters>
 
 	<!-- 領域定義 -->
 	<regions>
 		<!-- マップ全体 -->
-		<rectangle id="map" min="-109,-67" max="67,67"/>
+		<rectangle name="map" min="-109,-67" max="67,67"/>
 		<!-- チーム拠点定義と保護 -->
-		<cuboid id="blue-base" min="-67,63,22" max="67,94,46"/>
-		<cuboid id="red-base" min="-67,63,-47" max="67,94,-22"/>
-		<union id="Base">
-			<region id="blue-base"/>
-			<region id="red-base"/>
+		<cuboid name="blue-base" min="-67,63,22" max="67,94,46"/>
+		<cuboid name="red-base" min="-67,63,-47" max="67,94,-22"/>
+		<union name="Base">
+			<region name="blue-base"/>
+			<region name="red-base"/>
 		</union>
 
 		<apply block="not-editable" block-place="deny-all" message="`4You may not modify bases./拠点は編集できません。">
-			<region id="Base"/>
+			<region name="Base"/>
 		</apply>
 
 		<!-- リスポ位置から降りる時にkitを付与 -->
@@ -155,8 +177,8 @@
 		<apply block="tnt-guard-red">
 			<cuboid min="-67,0,-67" max="66,43,-23" />
 		</apply>
-
 		<!-- 観戦者スポーンの保護 -->
+
 		<apply block="deny-blocks" message="`4You may not edit the base./拠点は編集できません。">
 			<cuboid min="-109,59,8" max="-81,69,-6" />
 		</apply>
@@ -236,7 +258,7 @@
 
 		<!-- 青チーム側 -->
 		<renewable rate="80" particles="false" sound="false" avoid-entities="true">
-			<region id="blue-clay">
+			<region name="blue-clay">
 				<cuboid min="-67,6,22" max="66,12,66" />
 				<cuboid min="-48,0,23" max="-41,6,64" />
 				<cuboid min="40,0,23" max="47,6,64" />
@@ -254,7 +276,7 @@
 
 		<!-- 赤チーム側 -->
 		<renewable rate="80" particles="false" sound="false" avoid-entities="true">
-			<region id="red-clay">
+			<region name="red-clay">
 				<cuboid min="-67,6,-67" max="66,12,-23" />
 				<cuboid min="-48,0,-64" max="-41,6,-25" />
 				<cuboid min="40,0,-64" max="47,6,-25" />
@@ -275,7 +297,7 @@
 		<!-- エメラルド破壊でTNTを取得 -->
 		<rule>
 			<region>
-				<region id="map"/>
+				<region name="map"/>
 			</region>
 			<filter>
 				<block>emerald block</block>
@@ -292,7 +314,7 @@
 		<!-- ブロックドロップ拒否 -->
 		<rule>
 			<region>
-				<region id="map"/>
+				<region name="map"/>
 			</region>
 			<filter>
 				<block>Stained clay</block>
