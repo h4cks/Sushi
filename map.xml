@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <map proto="1.3.3">
 	<name>Sushi</name>
-	<version>0.1.11</version>
+	<version>0.2.0</version>
 	<objective>目標の破壊/Destroy the enemy's Monument.</objective>
 
 	<authors>
@@ -51,6 +51,9 @@
 			<item slot="32" amount="64">Redstone Block</item>
 			<item slot="34" amount="64" >Quartz Block</item>
 			<item slot="35" amount="64" >Quartz Block</item>
+			<!-- ポーション効果 -->
+			<potion duration="oo" amplifier="4">REGENERATION</potion>
+     		<potion duration="oo" amplifier="4">DAMAGE_RESISTANCE</potion>
 		</kit>
 		<kit name="blue" parents="default">
 			<helmet color="0000ff" damage="-3000" enchantment="protection explosions" bind="true">Leather Helmet</helmet><!-- damage値-3000で耐久度上がる -->
@@ -72,10 +75,10 @@
 	<!-- スポーン位置 -->
 	<spawns>
 		<spawn team="blue" yaw="0" kit="blue">
-			<cuboid min="-11,66,32" max="11,66,37" />
+			<cuboid min="-11,66,27" max="11,66,32" />
 		</spawn>
 		<spawn team="red" yaw="180" kit="red">
-			<cuboid min="-11,66,-32" max="11,66,-37" />
+			<cuboid min="-11,66,-27" max="11,66,-32" />
 		</spawn>
 		<default yaw="-90">
 			<cuboid min="-90,63,-2" max="-86,63,2" />
@@ -84,6 +87,16 @@
 
 	<!-- フィルター定義 -->
 	<filters>
+		<filter name="only-blue" parents="deny-players">
+			<allow>
+				<team>blue</team>
+			</allow>
+		</filter>
+		<filter name="only-red" parents="deny-players">
+			<allow>
+				<team>red</team>
+			</allow>
+		</filter>
 		<filter name="spawn-blue">
 			<team>blue</team>
 		</filter>
@@ -91,7 +104,7 @@
 			<team>red</team>
 		</filter>
 
-		<filter name="not-editable" parents="deny-blocks"></filter>
+		<filter name="not-editable" parents="deny-blocks" />
 		<filter name="outside">
 			<not>
 				<void/>
@@ -149,10 +162,10 @@
 	<!-- 領域定義 -->
 	<regions>
 		<!-- マップ全体 -->
-		<rectangle name="map" min="-109,-67" max="67,67"/>
+		<rectangle name="map" min="-109,-62" max="67,62"/>
 		<!-- チーム拠点定義と保護 -->
-		<cuboid name="blue-base" min="-67,63,22" max="67,94,46"/>
-		<cuboid name="red-base" min="-67,63,-47" max="67,94,-22"/>
+		<cuboid name="blue-base" min="-67,63,17" max="67,94,41"/>
+		<cuboid name="red-base" min="-67,63,-42" max="67,94,-17"/>
 		<union name="Base">
 			<region name="blue-base"/>
 			<region name="red-base"/>
@@ -161,21 +174,31 @@
 		<apply block="not-editable" block-place="deny-all" message="`4You may not modify bases./拠点は編集できません。">
 			<region name="Base"/>
 		</apply>
+		<apply block="deny-world" message="`4You may not modify dojo./道場は編集できません。">
+			<cuboid min="-111,65,-21" max="-203,88,21"/>
+		</apply>
+		
+		<apply enter="only-blue" message="敵拠点に入る事は出来ません。 / You may not enter enemy bases.">
+			<cuboid min="-122,67,9" max="-112,74,16"/>
+		</apply>
+		<apply enter="only-red" message="敵拠点に入る事は出来ません。 / You may not enter enemy bases.">
+			<cuboid min="-122,67,-16" max="-112,74,9"/>
+		</apply>
 
 		<!-- リスポ位置から降りる時にkitを付与 -->
 		<apply filter="spawn-blue" kit="spawn-kit">
-			<cuboid min="-70,63,19" max="70,63,70"/>
+			<cuboid min="-70,63,14" max="70,63,65"/>
 		</apply>
 		<apply filter="spawn-red" kit="spawn-kit">
-			<cuboid min="-70,63,-70" max="70,63,-19" />
+			<cuboid min="-70,63,-14" max="70,63,-65"/>
 		</apply>
 		
 		<!--  自軍破壊保護  -->
 		<apply block="tnt-guard-blue">
-			<cuboid min="-67,0,22" max="66,43,66" />
+			<cuboid min="-67,0,17" max="66,43,61" />
 		</apply>
 		<apply block="tnt-guard-red">
-			<cuboid min="-67,0,-67" max="66,43,-23" />
+			<cuboid min="-67,0,-62" max="66,43,-18" />
 		</apply>
 		<!-- 観戦者スポーンの保護 -->
 
@@ -193,6 +216,30 @@
 			<rectangle min="-oo,-oo" max="oo,oo"/>
 		</apply>
 	</regions>
+
+	<portals>
+		<!-- blue portal -->
+		<portal x="@-126" y="@69" z="@12" yaw="90">
+			<cuboid min="-15,64,37" max="-10,67,38"/>
+		</portal>
+		<portal x="@-126" y="@69" z="@12" yaw="90">
+			<cuboid min="9,64,37" max="14,67,38"/>
+		</portal>
+		<portal x="@0" y="@66" z="@24" yaw="90">
+			<cuboid min="-121,67,9" max="-112,74,16"/>
+		</portal>
+		
+		<!-- red portal -->
+		<portal x="@-126" y="@69" z="@-13" yaw="-90">
+			<cuboid min="-14,64,-38" max="-9,67,-37"/>
+		</portal>
+		<portal x="@-126" y="@69" z="@-13" yaw="-90">
+			<cuboid min="10,64,-38" max="15,67,-37"/>
+		</portal>
+		<portal x="@0" y="@66" z="@-24" yaw="-90">
+			<cuboid min="-121,67,-16" max="-112,74,9"/>
+		</portal>
+	</portals>
 
 	<itemremove>
 		<item>Diamond Pickaxe</item>
@@ -226,23 +273,23 @@
 	<!--  モニュメント定義  -->
 	<destroyables show-progress="false" materials="stained clay" completion="36%">
 		<destroyable owner="blue" name="Tamago">
-			<cuboid min="24,12,28" max="57,34,61"/>
+			<cuboid min="24,12,23" max="57,34,56"/>
 		</destroyable>
 		<destroyable owner="blue" name="Ebi">
-			<cuboid min="-21,12,28" max="23,34,72"/>
+			<cuboid min="-21,12,23" max="23,34,67"/>
 		</destroyable>
 		<destroyable owner="blue" name="Maki">
-			<cuboid min="-59,12,30" max="-29,28,60"/>
+			<cuboid min="-59,12,25" max="-29,28,55"/>
 		</destroyable>
 
 		<destroyable owner="red" name="Tamago">
-			<cuboid min="-57,12,-61," max="-24,34,-28"/>
+			<cuboid min="-57,12,-56," max="-24,34,-23"/>
 		</destroyable>
 		<destroyable owner="red" name="Ebi">5e
-			<cuboid min="-23,12,-72" max="21,34,-28"/>
+			<cuboid min="-23,12,-67" max="21,34,-23"/>
 		</destroyable>
 		<destroyable owner="red" name="Maki">
-			<cuboid min="29,12,-60" max="59,28,-30"/>
+			<cuboid min="29,12,-55" max="59,28,-25"/>
 		</destroyable>
 	</destroyables>
 
@@ -259,17 +306,10 @@
 		<!-- 青チーム側 -->
 		<renewable rate="80" particles="false" sound="false" avoid-entities="true">
 			<region name="blue-clay">
-				<cuboid min="-67,6,22" max="66,12,66" />
-				<cuboid min="-48,0,23" max="-41,6,64" />
-				<cuboid min="40,0,23" max="47,6,64" />
+				<cuboid min="-67,6,17" max="66,12,61" />
+				<cuboid min="-48,0,18" max="-41,6,59" />
+				<cuboid min="40,0,18" max="47,6,59" />
 			</region>
-
-
-
-
-
-
-
 			<renew>Stained Clay</renew>
 			<replace>Air</replace>
 		</renewable>
@@ -277,16 +317,10 @@
 		<!-- 赤チーム側 -->
 		<renewable rate="80" particles="false" sound="false" avoid-entities="true">
 			<region name="red-clay">
-				<cuboid min="-67,6,-67" max="66,12,-23" />
-				<cuboid min="-48,0,-64" max="-41,6,-25" />
-				<cuboid min="40,0,-64" max="47,6,-25" />
+				<cuboid min="-67,6,-62" max="66,12,-18" />
+				<cuboid min="-48,0,-59" max="-41,6,-20" />
+				<cuboid min="40,0,-59" max="47,6,-20" />
 			</region>
-
-
-
-
-
-
 			<renew>Stained Clay</renew>
 			<replace>Air</replace>
 		</renewable>
@@ -337,6 +371,12 @@
 		]]>
 	</script>
 
+	<!-- 5 -->
+	<broadcasts>
+		<tip after="10s">へいらっしゃい!</tip>
+		<alert after="1s">TNTキャノン道場開設しました!リスポーン時に横のゲートからどうぞ</alert>
+		<tip after="5m" every="5m" count="5">いい食べっぷりだ!</tip>
+	</broadcasts>
 
 	<!-- チュートリアル -->
 	<include src="tutorial.xml"/>
@@ -366,7 +406,7 @@
 			     <line>青チームのスポーン場所はここです。</line>
 		    </message>
    			<teleport>
-   				<point yaw="180" pitch="30">0,74,50</point>
+   				<point yaw="180" pitch="30">0,74,45</point>
 			</teleport>
 		</stage>
 		<stage title="Red-Base">
@@ -377,7 +417,7 @@
 			     <line>赤チームのスポーン場所はここです。</line>
 		    </message>
    			<teleport>
-   				<point yaw="0" pitch="30">0,74,-49</point>
+   				<point yaw="0" pitch="30">0,74,-44</point>
 			</teleport>
 		</stage>
 
@@ -390,7 +430,7 @@
 			     <line>これがTamagoです。</line>
 		    </message>
    			<teleport>
-   				<point yaw="180" pitch="15">-41,36,-11</point>
+   				<point yaw="180" pitch="15">-41,36,-6</point>
 			</teleport>
 		</stage>
 		<stage title="Ebi">
@@ -401,7 +441,7 @@
 			     <line>これがEbiです。</line>
 		    </message>
    			<teleport>
-   				<point yaw="180" pitch="15">4,36,-11</point>
+   				<point yaw="180" pitch="15">4,36,-6</point>
 			</teleport>
 		</stage>
 		<stage title="Maki">
@@ -412,12 +452,12 @@
 			     <line>これがMakiです。</line>
 		    </message>
    			<teleport>
-   				<point yaw="180" pitch="15">45,36,-11</point>
+   				<point yaw="180" pitch="15">45,36,-6</point>
 			</teleport>
 		</stage>
 
 		<!-- TNTの取得方法の説明 -->	
-		<stage title="Yellow-Base">
+		<stage title="TNT Drops">
 		    <message>
     			 <line>You can gain TNTs if you break the emerald blocks.</line>
 			</message>
@@ -425,17 +465,19 @@
 			     <line>エメラルドブロックを壊すとTNTを取得できます。</line>
 		    </message>
    			<teleport>
-   				<point yaw="0" pitch="15">-61,15,53</point>
+   				<point yaw="0" pitch="15">-61,15,48</point>
 			</teleport>
 		</stage>
 
-		<!-- TNTキャノンの説明 -->	
-		<stage title="Yellow-Base">
+		<!-- TNTキャノン道場の説明 -->	
+		<stage title="TNT Cannon Dojo">
 		    <message>
-    			 <line>This is an example of TNT cannon.</line>
+    			 <line>This is a portal to "TNT cannon dojo".</line>
+    			 <line>You can learn to make TNT cannnons there.</line>
 			</message>
 		    <message lang="ja_JP">
-			     <line>TNTキャノンの例です。</line>
+			     <line>このゲートをくぐるとTNTキャノン道場にワープします。。</line>
+			     <line>そこでTNTキャノンの作り方を学べます。</line>
 		    </message>
    			<teleport>
    				<point yaw="90" pitch="15">-97,67,0</point>
